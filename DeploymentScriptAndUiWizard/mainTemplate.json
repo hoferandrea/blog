@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "16455141971694042888"
+      "templateHash": "4852140708439371120"
     }
   },
   "parameters": {
@@ -74,7 +74,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.17.1.54307",
-              "templateHash": "12841128812399406723"
+              "templateHash": "1284820232684989367"
             }
           },
           "parameters": {
@@ -97,7 +97,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "param(\r\n    [Parameter(Mandatory = $true)][string]$userPrincipalName,\r\n    [Parameter(Mandatory = $true)][string]$userDisplayName\r\n)\r\n\r\n\"#############################################\"\r\n\"# hoferlabs.ch                              #\"\r\n\"# create AAD user (deployment script)       #\"\r\n\"# Version: 0.1                              #\"\r\n\"#############################################\"\r\ntry {\r\n\r\n    \"get access token\"\r\n    $context = Get-AzContext  \r\n    Write-Host \"Connected to Azure with subscription: $($context.Subscription) with $($context.Account.type) $($context.Account.id)\"\r\n\r\n    $token = (Get-AzAccessToken -ResourceUrl \"https://graph.microsoft.com\").Token\r\n\r\n    $authHeader = @{\r\n        'Content-Type'  = 'application/json'\r\n        'Authorization' = 'Bearer ' + $token\r\n        'Resource'      = 'https://graph.microsoft.com'\r\n    }\r\n\r\n    \"check if user exists\"\r\n    $objUser = $null\r\n    $uri = \"https://graph.microsoft.com/beta/users/$userPrincipalName\"\r\n    $objUser = Invoke-RestMethod -Uri $uri -Method Get -Headers $authHeader -StatusCodeVariable \"scv\" -SkipHttpErrorCheck\r\n    If ($scv -eq 200) {\r\n        $result = \"user with id $($objUser.id) already exists.\"\r\n        $result\r\n    }\r\n    Else {\r\n        \"create user $userPrincipalName\"\r\n        $payload = @\"\r\n{\r\n    \"accountEnabled\": false,\r\n    \"displayName\": \"$userDisplayName\",\r\n    \"mailNickname\": \"notSet\",\r\n    \"userPrincipalName\": \"$userPrincipalName\",\r\n    \"passwordProfile\" : {\r\n        \"forceChangePasswordNextSignIn\": true,\r\n        \"password\": \"xWwvJ]6NMw+bWH-d\"\r\n    }\r\n}\r\n\"@\r\n        $uri = \"https://graph.microsoft.com/beta/users\"\r\n        $objUser = Invoke-RestMethod -Uri $uri -Method Post -Headers $authHeader -Body $payload\r\n        $result = \"user with id $($objUser.id) created.\"\r\n        $result\r\n    }\r\n\r\n    # create output\r\n    $DeploymentScriptOutputs = @{}\r\n    $DeploymentScriptOutputs[\"userId\"] = $($objUser.id)\r\n    $DeploymentScriptOutputs[\"result\"] = $result\r\n}\r\ncatch {\r\n    \"error catched:\"\r\n    Write-Output $(Get-Error)\r\n    # create output\r\n    $DeploymentScriptOutputs = @{}\r\n    $DeploymentScriptOutputs[\"result\"] = $(Get-Error).ErrorDetails.Message\r\n}\r\n\r\n\r\n"
+            "$fxv#0": "param(\r\n    [Parameter(Mandatory = $true)][string]$userPrincipalName,\r\n    [Parameter(Mandatory = $true)][string]$userDisplayName\r\n)\r\n\r\n\"#############################################\"\r\n\"# hoferlabs.ch                              #\"\r\n\"# create AAD user (deployment script)       #\"\r\n\"# Version: 0.1                              #\"\r\n\"#############################################\"\r\ntry {\r\n    $DeploymentScriptOutputs = @{}\r\n\r\n    \"get access token\"\r\n    $context = Get-AzContext  \r\n    Write-Host \"Connected to Azure with subscription: $($context.Subscription) with $($context.Account.type) $($context.Account.id)\"\r\n\r\n    $token = (Get-AzAccessToken -ResourceUrl \"https://graph.microsoft.com\").Token\r\n\r\n    $authHeader = @{\r\n        'Content-Type'  = 'application/json'\r\n        'Authorization' = 'Bearer ' + $token\r\n        'Resource'      = 'https://graph.microsoft.com'\r\n    }\r\n\r\n    \"check if user exists\"\r\n    $objUser = $null\r\n    $uri = \"https://graph.microsoft.com/beta/users/$userPrincipalName\"\r\n    $objUser = Invoke-RestMethod -Uri $uri -Method Get -Headers $authHeader -StatusCodeVariable \"scv\" -SkipHttpErrorCheck\r\n    If ($scv -eq 200) {\r\n        $result = \"user with id $($objUser.id) already exists.\"\r\n        $result\r\n    }\r\n    Else {\r\n        \"create user $userPrincipalName\"\r\n        $payload = @\"\r\n{\r\n    \"accountEnabled\": false,\r\n    \"displayName\": \"$userDisplayName\",\r\n    \"mailNickname\": \"notSet\",\r\n    \"userPrincipalName\": \"$userPrincipalName\",\r\n    \"passwordProfile\" : {\r\n        \"forceChangePasswordNextSignIn\": true,\r\n        \"password\": \"xWwvJ]6NMw+bWH-d\"\r\n    }\r\n}\r\n\"@\r\n        $uri = \"https://graph.microsoft.com/beta/users\"\r\n        $objUser = Invoke-RestMethod -Uri $uri -Method Post -Headers $authHeader -Body $payload\r\n        $result = \"user with id $($objUser.id) created.\"\r\n        $result\r\n    }\r\n\r\n    # create output\r\n    $DeploymentScriptOutputs[\"userId\"] = $($objUser.id)\r\n    $DeploymentScriptOutputs[\"result\"] = $result\r\n}\r\ncatch {\r\n    \"error catched:\"\r\n    Write-Output $(Get-Error)\r\n    # create output\r\n    $DeploymentScriptOutputs[\"result\"] = $(Get-Error).ErrorDetails.Message\r\n}\r\n\r\n\r\n"
           },
           "resources": [
             {
@@ -162,7 +162,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.17.1.54307",
-              "templateHash": "7652907581280702004"
+              "templateHash": "5387338697252078440"
             }
           },
           "parameters": {
@@ -185,7 +185,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "param(\r\n    [Parameter(Mandatory = $true)][string]$groupName,\r\n    [Parameter(Mandatory = $true)][string]$groupDescription\r\n)\r\n\r\n\"#############################################\"\r\n\"# hoferlabs.ch                              #\"\r\n\"# create AAD group (deployment script)      #\"\r\n\"# Version: 0.1                              #\"\r\n\"#############################################\"\r\ntry {\r\n\r\n    \"get access token\"\r\n    $context = Get-AzContext  \r\n    Write-Host \"Connected to Azure with subscription: $($context.Subscription) with $($context.Account.type) $($context.Account.id)\"\r\n\r\n    $token = (Get-AzAccessToken -ResourceUrl \"https://graph.microsoft.com\").Token\r\n\r\n    $authHeader = @{\r\n        'Content-Type'     = 'application/json'\r\n        'Authorization'    = 'Bearer ' + $token\r\n        'Resource'         = 'https://graph.microsoft.com'\r\n        'ConsistencyLevel' = 'eventual'\r\n    }\r\n\r\n    \"check if group exists\"\r\n    $objGroup = $null\r\n    $uri = \"https://graph.microsoft.com/beta/groups?`$filter=startswith(displayName,`'$groupName`')\"\r\n    $objGroup = Invoke-RestMethod -Uri $uri -Method Get -Headers $authHeader \r\n    If ($objGroup.value) {\r\n        $result = \"group with id $($objGroup.value.id) already exists.\"\r\n        $result\r\n    }\r\n    Else {\r\n        \"create group $grouPrincipalName\"\r\n        $payload = @\"\r\n{\r\n    \"description\": \"$groupDescription\",\r\n    \"displayName\": \"$groupName\",\r\n    \"isAssignableToRole\": true,\r\n    \"mailEnabled\": false,\r\n    \"mailNickName\": \"NotSet\",\r\n    \"securityEnabled\": true\r\n}\r\n\"@\r\n        $uri = \"https://graph.microsoft.com/beta/groups\"\r\n        $objGroup = Invoke-RestMethod -Uri $uri -Method Post -Headers $authHeader -Body $payload\r\n        $result = \"group with id $($objGroup.id) created.\"\r\n        $result\r\n    }\r\n\r\n    # create output\r\n    $DeploymentScriptOutputs = @{}\r\n    $DeploymentScriptOutputs[\"groupId\"] = $($objGroup.id)\r\n    $DeploymentScriptOutputs[\"result\"] = $result\r\n}\r\ncatch {\r\n    \"error catched:\"\r\n    Write-Output $(Get-Error)\r\n    # create output\r\n    $DeploymentScriptOutputs = @{}\r\n    $DeploymentScriptOutputs[\"result\"] = $(Get-Error).ErrorDetails.Message\r\n}"
+            "$fxv#0": "param(\r\n    [Parameter(Mandatory = $true)][string]$groupName,\r\n    [Parameter(Mandatory = $true)][string]$groupDescription\r\n)\r\n\r\n\"#############################################\"\r\n\"# hoferlabs.ch                              #\"\r\n\"# create AAD group (deployment script)      #\"\r\n\"# Version: 0.1                              #\"\r\n\"#############################################\"\r\ntry {\r\n    $DeploymentScriptOutputs = @{}\r\n\r\n    \"get access token\"\r\n    $context = Get-AzContext  \r\n    Write-Host \"Connected to Azure with subscription: $($context.Subscription) with $($context.Account.type) $($context.Account.id)\"\r\n\r\n    $token = (Get-AzAccessToken -ResourceUrl \"https://graph.microsoft.com\").Token\r\n\r\n    $authHeader = @{\r\n        'Content-Type'     = 'application/json'\r\n        'Authorization'    = 'Bearer ' + $token\r\n        'Resource'         = 'https://graph.microsoft.com'\r\n        'ConsistencyLevel' = 'eventual'\r\n    }\r\n\r\n    \"check if group exists\"\r\n    $objGroup = $null\r\n    $uri = \"https://graph.microsoft.com/beta/groups?`$filter=startswith(displayName,`'$groupName`')\"\r\n    $objGroup = Invoke-RestMethod -Uri $uri -Method Get -Headers $authHeader \r\n    If ($objGroup.value) {\r\n        $result = \"group with id $($objGroup.value.id) already exists.\"\r\n        # create output\r\n        $DeploymentScriptOutputs[\"groupId\"] = $($objGroup.value.id)\r\n        $DeploymentScriptOutputs[\"result\"] = $result\r\n        $result\r\n    }\r\n    Else {\r\n        \"create group $grouPrincipalName\"\r\n        $payload = @\"\r\n{\r\n    \"description\": \"$groupDescription\",\r\n    \"displayName\": \"$groupName\",\r\n    \"isAssignableToRole\": true,\r\n    \"mailEnabled\": false,\r\n    \"mailNickName\": \"NotSet\",\r\n    \"securityEnabled\": true\r\n}\r\n\"@\r\n        $uri = \"https://graph.microsoft.com/beta/groups\"\r\n        $objGroup = Invoke-RestMethod -Uri $uri -Method Post -Headers $authHeader -Body $payload\r\n        $result = \"group with id $($objGroup.id) created.\"\r\n        $result\r\n        # create output\r\n        $DeploymentScriptOutputs[\"groupId\"] = $($objGroup.id)\r\n        $DeploymentScriptOutputs[\"result\"] = $result\r\n    }\r\n\r\n}\r\ncatch {\r\n    \"error catched:\"\r\n    Write-Output $(Get-Error)\r\n    # create output\r\n    $DeploymentScriptOutputs = @{}\r\n    $DeploymentScriptOutputs[\"result\"] = $(Get-Error).ErrorDetails.Message\r\n}"
           },
           "resources": [
             {
@@ -253,7 +253,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.17.1.54307",
-              "templateHash": "10208324553534492918"
+              "templateHash": "4048693722713091008"
             }
           },
           "parameters": {
@@ -276,7 +276,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "param(\r\n    [Parameter(Mandatory = $true)][string]$userId,\r\n    [Parameter(Mandatory = $true)][string]$groupId\r\n)\r\n\r\n\"#############################################\"\r\n\"# hoferlabs.ch                              #\"\r\n\"# assign user to group (deployment script)  #\"\r\n\"# Version: 0.1                              #\"\r\n\"#############################################\"\r\ntry {\r\n\r\n    \"get access token\"\r\n    $context = Get-AzContext  \r\n    Write-Host \"Connected to Azure with subscription: $($context.Subscription) with $($context.Account.type) $($context.Account.id)\"\r\n\r\n    $token = (Get-AzAccessToken -ResourceUrl \"https://graph.microsoft.com\").Token\r\n\r\n    $authHeader = @{\r\n        'Content-Type'     = 'application/json'\r\n        'Authorization'    = 'Bearer ' + $token\r\n        'Resource'         = 'https://graph.microsoft.com'\r\n        'ConsistencyLevel' = 'eventual'\r\n    }\r\n\r\n    \"check if group membership already exists\"\r\n    $objGroupAssignment = $null\r\n    $uri = \"https://graph.microsoft.com/beta/users/$userId/memberOf?`$filter=id eq `'$groupId`'\"\r\n    $objGroupAssignment = Invoke-RestMethod -Uri $uri -Method Get -Headers $authHeader -StatusCodeVariable \"scv\" -SkipHttpErrorCheck\r\n    If ($scv -eq 200) {\r\n        $result = \"group membership already exists.\"\r\n        $result\r\n    }\r\n    Else {\r\n        \"create group assignment...\"\r\n        $payload = @\"\r\n{\r\n    \"@odata.id\": \"https://graph.microsoft.com/beta/users/$userId\"\r\n\r\n}\r\n\"@\r\n        $uri = \"https://graph.microsoft.com/beta/groups/$groupId/members/`$ref\"\r\n        $objGroupAssignment = Invoke-RestMethod -Uri $uri -Method Post -Headers $authHeader -Body $payload\r\n        $result = \"group membership created.\"\r\n        $result\r\n    }\r\n\r\n    # create output\r\n    $DeploymentScriptOutputs = @{}\r\n    $DeploymentScriptOutputs[\"result\"] = $result\r\n}\r\ncatch {\r\n    \"error catched:\"\r\n    Write-Output $(Get-Error)\r\n    # create output\r\n    $DeploymentScriptOutputs = @{}\r\n    $DeploymentScriptOutputs[\"result\"] = $(Get-Error).ErrorDetails.Message\r\n}"
+            "$fxv#0": "param(\r\n    [Parameter(Mandatory = $true)][string]$userId,\r\n    [Parameter(Mandatory = $true)][string]$groupId\r\n)\r\n\r\n\"#############################################\"\r\n\"# hoferlabs.ch                              #\"\r\n\"# assign user to group (deployment script)  #\"\r\n\"# Version: 0.1                              #\"\r\n\"#############################################\"\r\ntry {\r\n    $DeploymentScriptOutputs = @{}\r\n\r\n    \"get access token\"\r\n    $context = Get-AzContext  \r\n    Write-Host \"Connected to Azure with subscription: $($context.Subscription) with $($context.Account.type) $($context.Account.id)\"\r\n\r\n    $token = (Get-AzAccessToken -ResourceUrl \"https://graph.microsoft.com\").Token\r\n\r\n    $authHeader = @{\r\n        'Content-Type'     = 'application/json'\r\n        'Authorization'    = 'Bearer ' + $token\r\n        'Resource'         = 'https://graph.microsoft.com'\r\n        'ConsistencyLevel' = 'eventual'\r\n    }\r\n\r\n    \"check if group membership already exists\"\r\n    $objGroupAssignment = $null\r\n    $uri = \"https://graph.microsoft.com/beta/users/$userId/memberOf?`$filter=id eq `'$groupId`'\"\r\n    $objGroupAssignment = Invoke-RestMethod -Uri $uri -Method Get -Headers $authHeader -StatusCodeVariable \"scv\" -SkipHttpErrorCheck\r\n    If ($scv -eq 200) {\r\n        $result = \"group membership already exists.\"\r\n        $result\r\n    }\r\n    Else {\r\n        \"create group assignment...\"\r\n        $payload = @\"\r\n{\r\n    \"@odata.id\": \"https://graph.microsoft.com/beta/users/$userId\"\r\n\r\n}\r\n\"@\r\n        $uri = \"https://graph.microsoft.com/beta/groups/$groupId/members/`$ref\"\r\n        $objGroupAssignment = Invoke-RestMethod -Uri $uri -Method Post -Headers $authHeader -Body $payload\r\n        $result = \"group membership created.\"\r\n        $result\r\n    }\r\n\r\n    # create output\r\n    $DeploymentScriptOutputs[\"result\"] = $result\r\n}\r\ncatch {\r\n    \"error catched:\"\r\n    Write-Output $(Get-Error)\r\n    # create output\r\n    $DeploymentScriptOutputs[\"result\"] = $(Get-Error).ErrorDetails.Message\r\n}"
           },
           "resources": [
             {
@@ -437,7 +437,7 @@
         },
         "mode": "Incremental",
         "parameters": {
-          "prinipalId": {
+          "principalId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'aadGroupDeployment'), '2022-09-01').outputs.groupId.value]"
           },
           "roleDefinitionId": {
@@ -454,14 +454,14 @@
             "_generator": {
               "name": "bicep",
               "version": "0.17.1.54307",
-              "templateHash": "18160013879629109441"
+              "templateHash": "10690486860681559439"
             }
           },
           "parameters": {
             "roleDefinitionId": {
               "type": "string"
             },
-            "prinipalId": {
+            "principalId": {
               "type": "string"
             },
             "storageAccountName": {
@@ -473,10 +473,10 @@
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2020-04-01-preview",
               "scope": "[format('Microsoft.Storage/storageAccounts/{0}', parameters('storageAccountName'))]",
-              "name": "[guid(parameters('roleDefinitionId'), parameters('prinipalId'))]",
+              "name": "[guid(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), parameters('roleDefinitionId'), parameters('principalId'))]",
               "properties": {
                 "roleDefinitionId": "[format('/providers/Microsoft.Authorization/roleDefinitions/{0}', parameters('roleDefinitionId'))]",
-                "principalId": "[parameters('prinipalId')]"
+                "principalId": "[parameters('principalId')]"
               }
             }
           ]

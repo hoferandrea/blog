@@ -11,6 +11,7 @@ resource userAssignedManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIden
 
 }
 
+// describe the deployment script
 // use the current time in the name, otherwise the script isn't triggered again 
 resource assignAadGroupMembershipToUser 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: 'assignAadGroupMembershipToUser-${utcValue}'
