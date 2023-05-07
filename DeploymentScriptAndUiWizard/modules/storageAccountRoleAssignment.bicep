@@ -1,5 +1,5 @@
 param roleDefinitionId string
-param prinipalId string
+param principalId string
 param storageAccountName string 
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
@@ -13,6 +13,6 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
   scope: storageAccount
   properties:{
     roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/${roleDefinitionId}'
-    principalId: prinipalId
+    principalId: principalId
   }
 }

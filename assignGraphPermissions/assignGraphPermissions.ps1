@@ -7,7 +7,7 @@
 "####################################################################################################################################"
 
 # edit here
-# for enteprise applications / managed identitites: use the object id of the enterprise application
+# for enterprise applications / managed identities: use the object id of the enterprise application
 $strAppId = "c2280552-0c9a-43e7-8f44-e862d30c8058"
 $arrPermissions = "User.ReadWrite.All", "Group.ReadWrite.All", "Directory.ReadWrite.All", "GroupMember.ReadWrite.All", "RoleManagement.ReadWrite.Directory" 
 
