@@ -1,0 +1,1 @@
+related blog post: https://hoferlabs.ch/2023/05/06/Powershell-Graph-Assign-Graph-Application-Permissions/
